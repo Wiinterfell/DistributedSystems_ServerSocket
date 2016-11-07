@@ -5,7 +5,7 @@ from urlparse import urlparse, parse_qs
 import Queue
 import thread
 
-def EchoClientThread(queue) :
+def EchoClientThread(queue, port) :
 	while 1:	
 
 		#print queue.qsize()	
@@ -24,6 +24,10 @@ def EchoClientThread(queue) :
 			if (message == "KILL_SERVICE\n\n"):
 				client_socket.send("Server killed")
 				os.kill(os.getpid(), signal.SIGINT)
+			elif (message[:4] == "HELO"):
+				message = message.rstrip()
+				message = message + "\nIP: 0.0.0.0\nPort: " + str(port) + "\nStudentID: 16336670\n"
+				client_socket.send(message)
 			else:
 				message = message.upper().rstrip()
 				client_socket.send(message)
@@ -47,7 +51,7 @@ if __name__ == "__main__":
 	queue = Queue.Queue()
 
 	for i in range(0, maxThreads):
-		t = thread.start_new_thread(EchoClientThread, (queue,))
+		t = thread.start_new_thread(EchoClientThread, (queue, int(sys.argv[1])))
 
 	while 1:
 	    print "*** Waiting for client connections"
