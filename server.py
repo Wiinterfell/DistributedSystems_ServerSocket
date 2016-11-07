@@ -1,6 +1,6 @@
 import socket
 from  multiprocessing import Process
-import sys
+import sys, os, signal
 from urlparse import urlparse, parse_qs
 import Queue
 import thread
@@ -20,8 +20,13 @@ def EchoClientThread(queue) :
 		
 		if ("message" in request):
 			message = (request["message"])[0]
-			message = message.upper().rstrip()
-			client_socket.send(message)
+
+			if (message == "KILL_SERVICE\n\n"):
+				client_socket.send("Server killed")
+				os.kill(os.getpid(), signal.SIGINT)
+			else:
+				message = message.upper().rstrip()
+				client_socket.send(message)
 		else:
 			client_socket.close()
 			return
