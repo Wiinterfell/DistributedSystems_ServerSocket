@@ -1,10 +1,11 @@
 import socket
+import sys
 
 while 1:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try :
-        client_socket.connect(('0.0.0.0', 80))
+        client_socket.connect((sys.argv[1], int(sys.argv[2])))
     except :
         print 'Unable to connect'
         sys.exit()
