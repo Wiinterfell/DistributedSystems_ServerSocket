@@ -5,9 +5,9 @@ import Queue
 import thread
 
 def EchoClientThread(queue, port) :
-	while 1:	
+	stopped = False
+	while not stopped:
 
-		#print queue.qsize()	
 		if(queue.qsize() == 0):
 			continue
 
@@ -17,9 +17,10 @@ def EchoClientThread(queue, port) :
         
 		if (len(message) > 0):
 
-			if (message == "KILL_SERVICE\n\n"):
-				client_socket.send("Server killed")
-				os.kill(os.getpid(), signal.SIGINT)
+			if ("KILL_SERVICE" in message):
+				#client_socket.send("Server killed")
+				client_socket.close()
+				stopped = True
 			elif (message[:4] == "HELO"):
 				message = message.rstrip()
 				message = message + "\nIP:46.101.193.203\nPort:8000\nStudentID:16336670\n"
@@ -30,6 +31,9 @@ def EchoClientThread(queue, port) :
 		else:
 			client_socket.close()
 			return
+		
+		  if stopped:
+			os.kill(os.getpid(), signal.SIGINT)
 
 
 if __name__ == "__main__":
