@@ -19,8 +19,9 @@ def EchoClientThread(queue, port) :
 
 			if ("KILL_SERVICE" in message):
 				#client_socket.send("Server killed")
+				print "KILL_SERVICE"
 				client_socket.close()
-				os._exit(0)
+				os.kill(os.getpid(), signal.SIGINT)
 			elif (message[:4] == "HELO"):
 				message = message.rstrip()
 				message = message + "\nIP:46.101.193.203\nPort:8000\nStudentID:16336670\n"
