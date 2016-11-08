@@ -13,11 +13,9 @@ def EchoClientThread(queue, port) :
 
 		client_socket = queue.get()
 
-		client_data = client_socket.recv(4096)
+		message = client_socket.recv(4096)
         
-		request = parse_qs(urlparse(client_data).query)
-		
-		if ("message" in request):
+		if (len(message) > 0):
 			message = (request["message"])[0]
 
 			if (message == "KILL_SERVICE\n\n"):
@@ -25,7 +23,7 @@ def EchoClientThread(queue, port) :
 				os.kill(os.getpid(), signal.SIGINT)
 			elif (message[:4] == "HELO"):
 				message = message.rstrip()
-				message = message + "\nIP:46.101.193.203\nPort:8000\nStudentID:16336670\n"
+				message = message + "\nIP:46.101.193.203\nPort:8000" + str(port) + "\nStudentID:16336670\n"
 				client_socket.send(message)
 			else:
 				message = message.upper().rstrip()

@@ -12,7 +12,7 @@ while 1:
 
     data = raw_input("What do you want to send ?\n")
 
-    client_socket.send("GET /?message=" + data + "\n\n")
+    client_socket.send(data "\n")
     result = client_socket.recv(4096)
 
     if (result == "Server killed"):
