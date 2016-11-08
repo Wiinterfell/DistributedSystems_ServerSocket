@@ -16,7 +16,6 @@ def EchoClientThread(queue, port) :
 		message = client_socket.recv(4096)
         
 		if (len(message) > 0):
-			message = (request["message"])[0]
 
 			if (message == "KILL_SERVICE\n\n"):
 				client_socket.send("Server killed")
