@@ -32,7 +32,7 @@ def EchoClientThread(queue, port) :
 			client_socket.close()
 			return
 		
-		  if stopped:
+		if stopped:
 			os.kill(os.getpid(), signal.SIGINT)
 
 
