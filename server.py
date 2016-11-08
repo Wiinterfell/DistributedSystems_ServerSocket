@@ -5,8 +5,8 @@ import Queue
 import thread
 
 def EchoClientThread(queue, port) :
-
-	while 1:
+	stopped = False
+	while not stopped:
 
 		if(queue.qsize() == 0):
 			continue
@@ -21,7 +21,8 @@ def EchoClientThread(queue, port) :
 				#client_socket.send("Server killed")
 				print "KILL_SERVICE"
 				client_socket.close()
-				os.kill(os.getpid(), signal.SIGINT)
+				stopped = True
+				#os.kill(os.getpid(), signal.SIGINT)
 			elif (message[:4] == "HELO"):
 				message = message.rstrip()
 				message = message + "\nIP:46.101.193.203\nPort:8000\nStudentID:16336670\n"
@@ -34,7 +35,9 @@ def EchoClientThread(queue, port) :
 		else:
 			client_socket.close()
 			return
-
+		
+		if stopped:
+			os.kill(os.getpid(), signal.SIGINT)
 
 if __name__ == "__main__":
 	print "*** Creating server socket"
