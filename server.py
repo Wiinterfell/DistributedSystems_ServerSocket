@@ -25,7 +25,7 @@ def EchoClientThread(queue, port) :
 				os.kill(os.getpid(), signal.SIGINT)
 			elif (message[:4] == "HELO"):
 				message = message.rstrip()
-				message = message + "\nIP: 0.0.0.0\nPort: " + str(port) + "\nStudentID: 16336670\n"
+				message = message + "\nIP:46.101.193.203\nPort:8000\nStudentID:16336670\n"
 				client_socket.send(message)
 			else:
 				message = message.upper().rstrip()
