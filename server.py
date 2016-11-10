@@ -5,7 +5,8 @@ import Queue
 import thread
 
 def EchoClientThread(queue, port) :
-
+	while 1:
+	
 		if(queue.qsize() == 0):
 			continue
 
